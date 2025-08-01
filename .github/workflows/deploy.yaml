@@ -21,7 +21,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         S3_BUCKET: ${{ secrets.WK7_SAM_S3_BUCKET }}
-        CFN_EXEC_ROLE:  arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/CfnRole
+        CFN_EXEC_ROLE:  arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/sam-cfn
 
     steps:
       - name: Checkout repository
