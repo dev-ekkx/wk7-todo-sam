@@ -5,6 +5,9 @@ on:
     branches: 
         - main
 
+env:
+  STACK_NAME: wk7-todo-sam
+
 jobs:
   deploy:
     name: Todo App SAM Deployment

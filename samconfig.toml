@@ -1,8 +1,5 @@
 version = 0.1
 
-[default.global.parameters]
-stack_name = "wk7-todo-sam"
-
 [default.build.parameters]
 cached = true
 parallel = true
@@ -11,6 +8,7 @@ parallel = true
 lint = true
 
 [default.deploy.parameters]
+stack_name = "wk7-todo-sam"
 capabilities = "CAPABILITY_NAMED_IAM"
 confirm_changeset = true
 resolve_s3 = false
