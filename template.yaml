@@ -31,7 +31,7 @@ Resources:
 
         - IndexName: CreatedAtIndex
           KeySchema:
-            - AttributeName: sortKey
+            - AttributeName: status
               KeyType: HASH
             - AttributeName: createdAt
               KeyType: RANGE
@@ -40,7 +40,7 @@ Resources:
 
         - IndexName: UpdatedAtIndex
           KeySchema:
-            - AttributeName: sortKey
+            - AttributeName: status
               KeyType: HASH
             - AttributeName: updatedAt
               KeyType: RANGE
