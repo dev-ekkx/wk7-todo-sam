@@ -48,6 +48,5 @@ jobs:
             --s3-bucket $S3_BUCKET \
             --s3-prefix sam-artifacts \
             --capabilities CAPABILITY_NAMED_IAM \
-            # --role-arn $CFN_EXEC_ROLE \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset
