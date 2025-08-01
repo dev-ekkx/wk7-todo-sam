@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: DynamoDB Table for Todo App
+
+Resources:
+  TodoTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: TodoItems
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: createdAt
+          AttributeType: S
+        - AttributeName: updatedAt
+          AttributeType: S
+
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+      GlobalSecondaryIndexes:
+        - IndexName: StatusIndex
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+        - IndexName: CreatedAtIndex
+          KeySchema:
+            - AttributeName: sortKey
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+
+        - IndexName: UpdatedAtIndex
+          KeySchema:
+            - AttributeName: sortKey
+              KeyType: HASH
+            - AttributeName: updatedAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+
+      BillingMode: PAY_PER_REQUEST
+
+      Tags:
+        - Key: App
+          Value: TodoApp
+        - Key: Lab
+          Value: Week7_lab
+
+Outputs:
+  TodoTableName:
+    Description: "DynamoDB Table Name"
+    Value: !Ref TodoTable
+
+  StatusIndexName:
+    Description: "Status GSI Name"
+    Value: "StatusIndex"
+
+  CreatedAtIndexName:
+    Description: "CreatedAt GSI Name"
+    Value: "CreatedAtIndex"
+
+  UpdatedAtIndexName:
+    Description: "UpdatedAt GSI Name"
+    Value: "UpdatedAtIndex"

@@ -1,0 +1,53 @@
+name: Deploy DynamoDB with SAM
+
+on:
+  push:
+    branches: 
+        - main
+
+env:
+  STACK_NAME: wk7-todo-app
+
+jobs:
+  deploy:
+    name: SAM Deployment
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubOIDCRole
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set environment variables
+        run: |
+          echo "S3_BUCKET=${{ secrets.WK7_SAM_S3_BUCKET }}" >> $GITHUB_ENV
+          echo "CFN_EXEC_ROLE=arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/CloudFormationExecRole" >> $GITHUB_ENV
+          echo "AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}" >> $GITHUB_ENV
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+
+      - name: Install AWS SAM CLI
+        run: pip install aws-sam-cli
+
+      - name: Validate SAM template
+        run: sam validate --template template.yaml
+
+      - name: Deploy DynamoDB Table with SAM
+        run: |
+          sam deploy \
+            --template template.yaml \
+            --stack-name $STACK_NAME \
+            --region $AWS_REGION \
+            --s3-bucket $S3_BUCKET \
+            --s3-prefix sam-artifacts \
+            --capabilities CAPABILITY_NAMED_IAM \
+            --role-arn $CFN_EXEC_ROLE \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset
