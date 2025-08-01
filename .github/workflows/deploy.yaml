@@ -21,8 +21,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         S3_BUCKET: ${{ secrets.WK7_SAM_S3_BUCKET }}
-        OIDC_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/sam-cfn
-        CFN_EXEC_ROLE:  arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/CfnRole
+        CFN_EXEC_ROLE:  arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/sam-cfn
 
     steps:
       - name: Checkout repository
@@ -31,7 +30,7 @@ jobs:
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ env.OIDC_ROLE }}
+          role-to-assume: ${{ env.CFN_EXEC_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Install AWS SAM CLI
@@ -49,6 +48,6 @@ jobs:
             --s3-bucket $S3_BUCKET \
             --s3-prefix sam-artifacts \
             --capabilities CAPABILITY_NAMED_IAM \
-            --role-arn $CFN_EXEC_ROLE \
+            # --role-arn $CFN_EXEC_ROLE \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset
