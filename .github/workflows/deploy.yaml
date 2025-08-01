@@ -5,12 +5,9 @@ on:
     branches: 
         - main
 
-env:
-  STACK_NAME: wk7-todo-app
-
 jobs:
   deploy:
-    name: SAM Deployment
+    name: Todo App SAM Deployment
     runs-on: ubuntu-latest
     permissions:
       id-token: write
